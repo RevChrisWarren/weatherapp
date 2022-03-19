@@ -6,7 +6,7 @@
 }
 .form-input {
     box-sizing: border-box;
-    width: 75%;
+    width: 100%;
     min-height: 50px;
     font-size: 20px;
     padding: 12px, 0px;
@@ -14,14 +14,24 @@
 }
 .btn {
     margin-top: 10px;
-    width: 75%;
+    width: 100%;
     
 }
 .borderline {
     margin-top: 15px;
     border-bottom: 2px solid gray;
-    width: 75%;
+    width: 100%;
 }
 .title h2 {
     font-weight:bold;
+}
+.forecast p, a{
+    width: 20%;
+}
+
+.current {
+     margin: 20px;
+     padding: 20px;
+     border: 2px solid black;
+
 }
