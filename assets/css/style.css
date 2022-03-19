@@ -1,0 +1,27 @@
+.banner {
+    text-align: center;
+    color: white;
+    background: linear-gradient(to right, blue, darkblue);
+    padding: 5px;
+}
+.form-input {
+    box-sizing: border-box;
+    width: 75%;
+    min-height: 50px;
+    font-size: 20px;
+    padding: 12px, 0px;
+    margin: 0px, 10px;
+}
+.btn {
+    margin-top: 10px;
+    width: 75%;
+    
+}
+.borderline {
+    margin-top: 15px;
+    border-bottom: 2px solid gray;
+    width: 75%;
+}
+.title h2 {
+    font-weight:bold;
+}
