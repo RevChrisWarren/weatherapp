@@ -5,6 +5,7 @@ var currentWeatherContainer = document.getElementById("current");
 var forecastWeatherContainer = document.getElementById("forecast");
 var fiveDayTitle = document.getElementById("five-day");
 var btn2El = document.querySelector("#button2");
+var cityArray = [];
 
 
 var formSubmitHandler = function (event) {
@@ -131,8 +132,7 @@ function getWeatherData(latLon) {
                 
                 
                 container.append(forecastDateEl, forecastIconEl, forecastTempEl, forecastWindEl, forecastHumidityEl);
-                container.setAttribute("style", "border: 2px solid black");
-                container.setAttribute("style", "background-color: gray");
+                container.setAttribute("style", "background-color: gray; margin: 5px");
                 container.classList.add("weather-text");
                 forecastWeatherContainer.classList.add("row");
                 forecastWeatherContainer.append(container);
@@ -145,7 +145,7 @@ function btnCreator() {
     cityButton.type = "button";
     cityButton.innerHTML = (cityEl.value);
     cityButton.className = "btn btn-secondary"
-    btn2El.append(cityButton);
+       btn2El.append(cityButton);
     cityButton.onClick = function() {
         alert("boo");
      
@@ -156,6 +156,6 @@ function btnCreator() {
 userFormEl.addEventListener("submit", formSubmitHandler);
 userFormEl.addEventListener("submit", btnCreator);
 
-
+btn2El.addEventListener("click", alert("boo"));
 
 
