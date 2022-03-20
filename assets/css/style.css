@@ -25,13 +25,19 @@
 .title h2 {
     font-weight:bold;
 }
-.forecast p, a{
-    width: 20%;
+.forecast {
+    margin: 20px;
+     padding: 20px;
+     justify-content: space-between;
 }
 
-.current {
+.current,
+.five-day {
      margin: 20px;
      padding: 20px;
-     border: 2px solid black;
-
+    
+}
+.weather-text {
+    padding: 10px;
+    color:aliceblue;
 }
