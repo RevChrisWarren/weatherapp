@@ -50,7 +50,6 @@ function getCityGeo(city) {
         })
         .then(function (data) {
             //console.log('data: ', data);
-            currentWeatherContainer.innerHTML = "";
             forecastWeatherContainer.innerHTML = "";
             var currentCity = data[0].name;
             var todayDate = moment().format("MM/DD/YYYY");
