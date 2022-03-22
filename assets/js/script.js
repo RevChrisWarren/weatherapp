@@ -50,6 +50,8 @@ function getCityGeo(city) {
         })
         .then(function (data) {
             //console.log('data: ', data);
+            currentWeatherContainer.innerHTML = "";
+            forecastWeatherContainer.innerHTML = "";
             var currentCity = data[0].name;
             var todayDate = moment().format("MM/DD/YYYY");
             var currentCityDateEl = document.createElement("h2")
@@ -79,7 +81,7 @@ function getWeatherData(latLon) {
         .then(function (forecastData) {
             // Current Weather Data
             // console.log(forecastData);
-            forecastWeatherContainer.innerHTML = "";
+            
             var currentIcon = forecastData.current.weather[0].icon;
             //console.log(currentIcon);
             var currentIconUrl = `<img src="http://openweathermap.org/img/wn/${currentIcon}@2x.png">`;
