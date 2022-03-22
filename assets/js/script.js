@@ -11,7 +11,6 @@ var btn2El = document.querySelector("#button2");
 var formSubmitHandler = function (event) {
     //prevent page from refreshing
     event.preventDefault();
-
     //get value from input element
     var cityArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
     var cityName = cityEl.value.trim();
@@ -30,10 +29,8 @@ var formSubmitHandler = function (event) {
                 //console.log('latLon: ', latLon);
                 return getWeatherData(latLon)
             })
-
-        //clear old content
-        forecastContainerEl = "";
-        cityEl.value = "";
+            cityEl.value = "";
+    
     } else {
         alert("Please enter a city name")
     }
@@ -70,6 +67,7 @@ function getCityGeo(city) {
 }
 // create function to get the weather data
 function getWeatherData(latLon) {
+
     var lat = latLon.lat;
     var lon = latLon.lon;
     var forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=8d03dfd7dbf3df23ffe6a5d84a5e5242`
@@ -81,6 +79,7 @@ function getWeatherData(latLon) {
         .then(function (forecastData) {
             // Current Weather Data
             // console.log(forecastData);
+            forecastWeatherContainer.innerHTML = "";
             var currentIcon = forecastData.current.weather[0].icon;
             //console.log(currentIcon);
             var currentIconUrl = `<img src="http://openweathermap.org/img/wn/${currentIcon}@2x.png">`;
@@ -128,7 +127,6 @@ function getWeatherData(latLon) {
             forecastDailyArray.slice(0, 5).forEach(function (dailyData) {
 
                 var container = document.createElement("div");
-
                 var date = new Date(dailyData.dt * 1000).toLocaleDateString();
                 var forecastDateEl = document.createElement("p");
                 forecastDateEl.textContent = date;
@@ -173,8 +171,6 @@ function btnCreator() {
             })
 
         //clear old content
-    
-        forecastContainerEl = "";
         cityEl.value = "";
         
         })
