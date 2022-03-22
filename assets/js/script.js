@@ -173,8 +173,10 @@ function btnCreator() {
             })
 
         //clear old content
+    
         forecastContainerEl = "";
         cityEl.value = "";
+        
         })
         btn2El.append(cityButton);
     }
