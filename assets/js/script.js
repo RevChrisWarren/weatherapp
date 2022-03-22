@@ -17,12 +17,14 @@ var formSubmitHandler = function (event) {
     var cityName = cityEl.value.trim();
     console.log('cityArray: ', cityArray);
     console.log('cityName: ', cityName);
-   if (!cityArray.includes(cityName)) {
-    cityArray.push(cityName);
-   }
-   localStorage.setItem("searchHistory", JSON.stringify(cityArray))
+    
     console.log(cityArray);
     if (cityName) {
+        if (!cityArray.includes(cityName)) {
+            // first zero means put new item in 0 place, second zero means do not delete other items
+            cityArray.splice(0, 0, cityName);
+        }
+        localStorage.setItem("searchHistory", JSON.stringify(cityArray))
         getCityGeo(cityName)
             .then(function (latLon) {
                 //console.log('latLon: ', latLon);
@@ -37,7 +39,7 @@ var formSubmitHandler = function (event) {
     }
 };
 
-
+// take city name and translate it into longitude and latitude
 function getCityGeo(city) {
     //find the latitude and longitude for the city
     var apiUrlGeo = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=8d03dfd7dbf3df23ffe6a5d84a5e5242";
@@ -66,7 +68,7 @@ function getCityGeo(city) {
 
         })
 }
-
+// create function to get the weather data
 function getWeatherData(latLon) {
     var lat = latLon.lat;
     var lon = latLon.lon;
@@ -78,7 +80,7 @@ function getWeatherData(latLon) {
         })
         .then(function (forecastData) {
             // Current Weather Data
-           // console.log(forecastData);
+            // console.log(forecastData);
             var currentIcon = forecastData.current.weather[0].icon;
             //console.log(currentIcon);
             var currentIconUrl = `<img src="http://openweathermap.org/img/wn/${currentIcon}@2x.png">`;
@@ -92,7 +94,7 @@ function getWeatherData(latLon) {
             var tempEl = document.createElement("p");
             tempEl.textContent = `Temp: ${temp} ℉`;
             var wind = forecastData.current.wind_speed;
-           // console.log('wind: ', wind);
+            // console.log('wind: ', wind);
             var windEl = document.createElement("p");
             windEl.textContent = `Wind: ${wind} MPH`;
             var humidity = forecastData.current.humidity;
@@ -100,13 +102,13 @@ function getWeatherData(latLon) {
             var humidityEl = document.createElement("p");
             humidityEl.textContent = `Humidity: ${humidity} %`;
             var UV = forecastData.current.uvi;
-           // console.log('UV: ', UV);
+            // console.log('UV: ', UV);
             var UVIntroEl = document.createElement("p");
             UVIntroEl.classList.add("inline");
             UVIntroEl.textContent = "UV Index: ";
-            var UVEl = document.createElement("p"); 
-            UVEl.classList.add("inline"); 
-            UVEl.textContent =" " + UV + " ";
+            var UVEl = document.createElement("p");
+            UVEl.classList.add("inline");
+            UVEl.textContent = " " + UV + " ";
             if (UV <= 2) {
                 UVEl.setAttribute("style", "background-color: rgb(139, 230, 124); width: 35px");
             } else if (UV > 2) {
@@ -114,17 +116,17 @@ function getWeatherData(latLon) {
             }
             currentWeatherContainer.setAttribute("style", "border: 2px solid black");
             currentWeatherContainer.append(tempEl, windEl, humidityEl, UVIntroEl, UVEl);
-            
+
 
             // Forecast Weather Data
 
             var forecastDailyArray = forecastData.daily
             var title = document.createElement("h2");
-                title.innerHTML = "5-Day Forecast:" + "</br>";
-                title.style.width= "100%";
-                forecastWeatherContainer.append(title);
+            title.innerHTML = "5-Day Forecast:" + "</br>";
+            title.style.width = "100%";
+            forecastWeatherContainer.append(title);
             forecastDailyArray.slice(0, 5).forEach(function (dailyData) {
-                
+
                 var container = document.createElement("div");
 
                 var date = new Date(dailyData.dt * 1000).toLocaleDateString();
@@ -143,33 +145,45 @@ function getWeatherData(latLon) {
                 var humidity = dailyData.humidity
                 var forecastHumidityEl = document.createElement("p");
                 forecastHumidityEl.textContent = "Humidity: " + humidity + " %";
-                
-                
+
+
                 container.append(forecastDateEl, forecastIconEl, forecastTempEl, forecastWindEl, forecastHumidityEl);
                 container.setAttribute("style", "background-color: gray; margin: 5px");
                 container.classList.add("weather-text");
                 forecastWeatherContainer.classList.add("row");
                 forecastWeatherContainer.append(container);
             })
+            btnCreator();
         })
 }
-
+// create new buttons for search from array in locaStorage
 function btnCreator() {
+    btn2El.innerHTML = "";
     var cityArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
-    for (var i = 0 ; i < cityArray.length; i++){
-    var cityButton = document.createElement("button");
-    cityButton.type = "button";
-    cityButton.innerHTML = (cityArray[i]);
-    cityButton.className = "btn btn-secondary"
-       btn2El.append(cityButton);     
+    for (let i = 0; i < cityArray.length; i++) {
+        var cityButton = document.createElement("button");
+        cityButton.type = "button";
+        cityButton.innerHTML = cityArray[i];
+        cityButton.className = "btn btn-secondary"
+        cityButton.addEventListener("click", function cityButtonPress() {
+            getCityGeo(cityArray[i])
+            .then(function (latLon) {
+                //console.log('latLon: ', latLon);
+                return getWeatherData(latLon)
+            })
+
+        //clear old content
+        forecastContainerEl = "";
+        cityEl.value = "";
+        })
+        btn2El.append(cityButton);
     }
 }
-function cityButtonPress() {
-    getCityGeo(cityButton.innerHTML);
-}
-   
+
+
+
 btnCreator();
 userFormEl.addEventListener("submit", formSubmitHandler);
-btn2El.addEventListener("click", cityButtonPress);
+
 
 
