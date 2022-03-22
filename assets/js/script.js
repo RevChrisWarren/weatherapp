@@ -83,7 +83,7 @@ function getWeatherData(latLon) {
             
             var currentIcon = forecastData.current.weather[0].icon;
             //console.log(currentIcon);
-            var currentIconUrl = `<img src="http://openweathermap.org/img/wn/${currentIcon}@2x.png">`;
+            var currentIconUrl = `<img src="https://openweathermap.org/img/wn/${currentIcon}@2x.png">`;
             var currentIconEl = document.createElement("p");
             currentIconEl.innerHTML = currentIconUrl;
             currentIconEl.classList.add("inline");
@@ -132,7 +132,7 @@ function getWeatherData(latLon) {
                 var forecastDateEl = document.createElement("p");
                 forecastDateEl.textContent = date;
                 var icon = dailyData.weather[0].icon;
-                var iconUrl = `<img src="http://openweathermap.org/img/wn/${icon}@2x.png">`;
+                var iconUrl = `<img src="https://openweathermap.org/img/wn/${icon}@2x.png">`;
                 var forecastIconEl = document.createElement("p");
                 forecastIconEl.innerHTML = iconUrl;
                 var temp = ((dailyData.temp.max - 273.15) * 9 / 5 + 32).toFixed(2);
