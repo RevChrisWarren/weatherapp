@@ -39,7 +39,7 @@ var formSubmitHandler = function (event) {
 // take city name and translate it into longitude and latitude
 function getCityGeo(city) {
     //find the latitude and longitude for the city
-    var apiUrlGeo = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=8d03dfd7dbf3df23ffe6a5d84a5e5242";
+    var apiUrlGeo = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=8d03dfd7dbf3df23ffe6a5d84a5e5242";
     return fetch(apiUrlGeo)
         .then(function (response) {
             if (response.ok) {
