@@ -41,3 +41,6 @@
     padding: 10px;
     color:aliceblue;
 }
+.inline {
+    display:inline-block;
+}

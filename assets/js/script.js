@@ -5,7 +5,7 @@ var currentWeatherContainer = document.getElementById("current");
 var forecastWeatherContainer = document.getElementById("forecast");
 var fiveDayTitle = document.getElementById("five-day");
 var btn2El = document.querySelector("#button2");
-var cityArray = [];
+
 
 
 var formSubmitHandler = function (event) {
@@ -13,9 +13,15 @@ var formSubmitHandler = function (event) {
     event.preventDefault();
 
     //get value from input element
+    var cityArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
     var cityName = cityEl.value.trim();
+    console.log('cityArray: ', cityArray);
     console.log('cityName: ', cityName);
+   if (!cityArray.includes(cityName)) {
     cityArray.push(cityName);
+   }
+   localStorage.setItem("searchHistory", JSON.stringify(cityArray))
+    console.log(cityArray);
     if (cityName) {
         getCityGeo(cityName)
             .then(function (latLon) {
@@ -30,7 +36,6 @@ var formSubmitHandler = function (event) {
         alert("Please enter a city name")
     }
 };
-console.log(cityArray);
 
 
 function getCityGeo(city) {
@@ -51,6 +56,7 @@ function getCityGeo(city) {
             var currentCityDateEl = document.createElement("h2")
             currentCityDateEl.textContent = currentCity + " " + "(" + todayDate + ")";
             currentWeatherContainer.textContent = "";
+            currentCityDateEl.classList.add("inline");
             currentWeatherContainer.append(currentCityDateEl);
 
             return {
@@ -78,6 +84,7 @@ function getWeatherData(latLon) {
             var currentIconUrl = `<img src="http://openweathermap.org/img/wn/${currentIcon}@2x.png">`;
             var currentIconEl = document.createElement("p");
             currentIconEl.innerHTML = currentIconUrl;
+            currentIconEl.classList.add("inline");
             currentWeatherContainer.append(currentIconEl);
             //calculate kelvin temperature into fahrenheit (0K − 273.15) × 9/5 + 32 = -459.7°F
             var temp = ((forecastData.current.temp - 273.15) * 9 / 5 + 32).toFixed(2);
@@ -95,8 +102,10 @@ function getWeatherData(latLon) {
             var UV = forecastData.current.uvi;
            // console.log('UV: ', UV);
             var UVIntroEl = document.createElement("p");
+            UVIntroEl.classList.add("inline");
             UVIntroEl.textContent = "UV Index: ";
-            var UVEl = document.createElement("p");  
+            var UVEl = document.createElement("p"); 
+            UVEl.classList.add("inline"); 
             UVEl.textContent =" " + UV + " ";
             if (UV <= 2) {
                 UVEl.setAttribute("style", "background-color: rgb(139, 230, 124); width: 35px");
@@ -146,20 +155,21 @@ function getWeatherData(latLon) {
 }
 
 function btnCreator() {
+    var cityArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    for (var i = 0 ; i < cityArray.length; i++){
     var cityButton = document.createElement("button");
     cityButton.type = "button";
-    cityButton.innerHTML = (cityEl.value);
+    cityButton.innerHTML = (cityArray[i]);
     cityButton.className = "btn btn-secondary"
        btn2El.append(cityButton);     
     }
-
-    // function cityButtonPress() {
-    //     makeCityArray();
-    // }
-
-
+}
+function cityButtonPress() {
+    getCityGeo(cityButton.innerHTML);
+}
+   
+btnCreator();
 userFormEl.addEventListener("submit", formSubmitHandler);
-userFormEl.addEventListener("submit", btnCreator);
-// userFormEl.addEventListener("submit", cityButtonPress);
+btn2El.addEventListener("click", cityButtonPress);
 
 
